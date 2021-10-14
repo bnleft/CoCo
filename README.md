@@ -1,2 +1,2 @@
-# CoCo-Info
-Code Coogs' discord information bot
+# CoCo
+Code Coogs' discord main bot
