@@ -34,7 +34,7 @@ module.exports = {
         let mes;
         if(str == ""){
             mes = ``;
-            message.channel.send(`\`\`\`Syntax: $stonks (any)\`\`\``);
+            message.channel.send(`\`\`\`Syntax: coco-stonks (any)\`\`\``);
             return;
         }
         else{
