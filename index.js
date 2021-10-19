@@ -54,6 +54,8 @@ client.on('messageCreate', message => {
         client.commands.get('help').execute(message, args, commandFiles, Discord);
     else if(command === 'info')
         client.commands.get('info').execute(message, args, client);
+    else if(command === 'stonks')
+        client.commands.get('stonks').execute(message, args, Discord);
 
 });
 

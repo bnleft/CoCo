@@ -10,8 +10,12 @@ module.exports = {
         
         if(args[0] == 'rules')
             rules(message, client);
+        else if(args[0] == 'officers')
+            officers(message, client);
+        else if(args[0] == 'socials')
+            socials(message, client);
         else
-            return message.channel.send('Arguments needed.');
+            return message.channel.send('Valid arguments needed.');
 
     }
 }
@@ -51,16 +55,86 @@ Subject to change.
 React to gain access other channels
 \`\`\``;
 
-    const messageID = '';
+    const messageID = '898697885863002113';
 
     if(!messageID)
         return client.channels.cache.get(channelID).send(rulesMessage).then(m => {
             m.react('🥥');
         });
     else
-        client.channels.cache.get(channelID).messages.fetch(messageID)
+        return client.channels.cache.get(channelID).messages.fetch(messageID)
         .then(m => {
             m.edit(rulesMessage);
             m.react('🥥');
         });
 };
+
+// #officers
+const officers = (message, client) => {
+    const channelID = message.guild.channels.cache.find(c => c.name === 'officers').id;
+
+    const officersMessage = 
+`\`\`\`yaml
+Code Coogs Officers
+
+=================================================================================================
+
+President : Tailer 
+
+VP of External Affairs : Janice 
+
+VP of Internal Affairs : Rodolfo
+
+Treasurer : Jennifer F
+
+Marketing Director : Lupita
+
+Activities Director : Grace
+
+Artist : Jennifer H
+
+Competitive Programming Director : Nghia 
+
+Discord Bot Wizard : Bryant
+
+Webmaster : Cesar
+
+Workshop Director : Abdullah
+
+Workshop Tutor : Eithan, Frank, Bryant, Nghia, Noah, Cindy, Abdullah
+
+=================================================================================================
+
+Subject to change.
+
+\`\`\``;
+
+    const messageID = '899830901146521601';
+
+    if(!messageID)
+        return client.channels.cache.get(channelID).send(officersMessage);
+    else
+        return client.channels.cache.get(channelID).messages.fetch(messageID)
+        .then(m => {
+            m.edit(officersMessage);
+        });
+}
+
+// #socials
+const socials = (message, client) => {
+    const channelID = message.guild.channels.cache.find(c => c.name === 'socials').id;
+
+    const socialsMessage = `
+Instagram | https://www.instagram.com/uh_codecoogs/
+`;
+
+    const messageID = '899884077157605457';
+
+    if(!messageID)
+        return client.channels.cache.get(channelID).send(socialsMessage);
+    else
+        return client.channels.cache.get(channelID).messages.fetch(messageID)
+        .then(m => {
+            m.edit(socialsMessage);
+        });    
+}
