@@ -47,3 +47,13 @@ Sends/Edits message in #socials
 ## The `stonks` command
 _Access: everyone_
 
+__No arguments__
+> coco-stonks
+
+Does nothing
+
+__any__
+> coco-stonks GME
+
+Displays picture of stonks with text
+

@@ -3,10 +3,16 @@ const Discord = require('discord.js');
 const keepAlive = require('./server');
 const fs = require('fs');
 
+const {
+    RULES_MESSAGE_ID,
+} = require('./data/info');
+
 // Configuration
 require('dotenv').config();
 const token = process.env.TOKEN;
 const prefix = 'coco-';
+
+
 
 // Defining bot
 const client = new Discord.Client({
@@ -22,19 +28,14 @@ const client = new Discord.Client({
     ],
 });
 
-// Creating collection of commands adn events
+// Creating collection of commands
 client.commands = new Discord.Collection();
-client.events = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
 }
-
-// Events (WIP)
-//const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
 
 // Bot start
 client.on('ready', () => {
@@ -44,6 +45,17 @@ client.on('ready', () => {
 
 // Message handling
 client.on('messageCreate', message => {
+    
+    if(message.channel.id === message.guild.channels.cache.find(c => c.name === 'welcome').id){
+        var ran = Math.floor((Math.random() * 10) + 1);
+        if(ran === 1)
+            message.channel.send("I lost my life savings from dogecoin now go read #rules");
+        else if(ran === 2)
+            message.channel.send("I bet you won't read #rules");
+        else if(ran === 3)
+            message.channel.send("Read #rules if you want rough brain");
+    }
+    
     if(!message.content.startsWith(prefix) || message.author.bot) 
         return;
     
@@ -61,7 +73,7 @@ client.on('messageCreate', message => {
 
 // Add reaction handling
 client.on('messageReactionAdd', async (reaction, user) => {
-    const rulesMessageID = '898697885863002113';
+    const rulesMessageID = RULES_MESSAGE_ID;
     if(reaction.partial){
         if(reaction.message.id === rulesMessageID){
             const { guild } = reaction.message;
@@ -74,7 +86,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 // Remove reaction handling
 client.on('messageReactionRemove', async (reaction, user) => {
-    const rulesMessageID = '898697885863002113';
+    const rulesMessageID = RULES_MESSAGE_ID;
     if(reaction.partial){
         if(reaction.message.id === rulesMessageID){
             const { guild } = reaction.message;

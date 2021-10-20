@@ -1,6 +1,6 @@
 module.exports = {
     name: 'help',
-    category: 'everyone',
+    permission: 'everyone',
     description: 'Displays all commands',
     execute(message, args, commandFiles, Discord){
         const embed = new Discord.MessageEmbed();
@@ -16,13 +16,13 @@ module.exports = {
             if(args[0]){
                 if(command.name === args[0]){
                     embed.addFields(
-                        { name: `${command.name}`, value: `role: ${command.category}\ndesc: ${command.description}`}
+                        { name: `${command.name}`, value: `role: ${command.permission}\ndesc: ${command.description}`}
                     );
                     break;
                 }
             }else{
                 embed.addFields(
-                        { name: `${command.name}`, value: `role: ${command.category}\ndesc: ${command.description}`}
+                        { name: `${command.name}`, value: `role: ${command.permission}\ndesc: ${command.description}`}
                 );
             }
         }

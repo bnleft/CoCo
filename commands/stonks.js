@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = {
     name: 'stonks',
-    category: 'everyone',
+    permission: 'everyone',
     description: 'Short squeeze',
     async execute(message, args, Discord){
         const canvas = Canvas.createCanvas(1568, 1585);
