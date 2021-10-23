@@ -6,7 +6,7 @@ module.exports = {
     name: 'stonks',
     permission: 'everyone',
     description: 'Short squeeze',
-    async execute(message, args, Discord){
+    async execute(message, args, client, Discord){
         const canvas = Canvas.createCanvas(1568, 1585);
         const ctx = canvas.getContext('2d');
         const background = await Canvas.loadImage(

@@ -54,13 +54,13 @@ Artist : Jennifer H
 
 Competitive Programming Director : Nghia 
 
+Workshop Director : Abdullah
+
 Discord Bot Wizard : Bryant
 
 Webmaster : Cesar
 
-Workshop Director : Abdullah
-
-Workshop Tutor : Eithan, Frank, Bryant, Nghia, Noah, Cindy, Abdullah
+Workshop Facilitator : Eithan, Frank, Bryant, Nghia, Noah, Abdullah
 
 =================================================================================================
 
@@ -69,6 +69,11 @@ Subject to change.
 \`\`\``,
     SOCIALS_MESSAGE :
 `
-Instagram | https://www.instagram.com/uh_codecoogs/
+**Linktree**
+https://linktr.ee/codecoogs
+**Instagram**
+https://www.instagram.com/uh_codecoogs/
+**MS Teams**
+https://teams.microsoft.com/l/team/19%3atzOm8jjZzK2-L6QLClLWwaiiep6W_rk4QMONhcHUlEY1%40thread.tacv2/conversations?groupId=614c0053-385f-4bbc-a838-8d5f2864e552&tenantId=170bbabd-a2f0-4c90-ad4b-0e8f0f0c4259
 `,
 };

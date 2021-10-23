@@ -11,7 +11,7 @@ module.exports = {
     name: 'info',
     permission: 'Wizard',
     description: 'Sends messages to certain channels in information category',
-    execute(message, args, client){
+    execute(message, args, client, Discord){
         let wizRole = message.member.roles.cache.filter(role => role.name === 'Wizard');
         
         if(wizRole.size == 0)
@@ -24,7 +24,7 @@ module.exports = {
         else if(args[0] == 'socials')
             sendInfo(message, client, 'socials', SOCIALS_MESSAGE, SOCIALS_MESSAGE_ID);
         else
-            return message.channel.send('Valid arguments needed.');
+            return message.channel.send('coco-info <rules/officers/socials> ');
 
     }
 }
@@ -32,11 +32,12 @@ module.exports = {
 const sendInfo = (message, client, channelName, infoMessage, infoMessageID) => {
     const channelID = message.guild.channels.cache.find(c => c.name === channelName).id;
 
-    if(!infoMessageID)
+    if(!infoMessageID){
         return client.channels.cache.get(channelID).send(infoMessage).then(m => {
             if(channelName == 'rules')
                 m.react('🥥');
         });
+    }
     else
         return client.channels.cache.get(channelID).messages.fetch(infoMessageID)
         .then(m => {

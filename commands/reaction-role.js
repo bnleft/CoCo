@@ -4,11 +4,15 @@ const reaction_regex_single_line = regex;
 const channel_regex = /^<#(\d+)>/;
 const role_regex = /(^.*)(<@(?:&(\d+)|([^\n:<>@&]+))>)/gm;
 
+const {
+    RULES_MESSAGE_ID,
+} = require('../data/info');
+
 module.exports = {
     name: 'reaction-role',
     permission: 'Wizard',
     description: 'Creates a reaction embed in the specified channel.',
-    async execute(message, args, client){
+    async execute(message, args, client, Discord){
         // Wizard Permission level, this should be done in createMessage handler by checking the permissions field.
         let wizRole = message.member.roles.cache.filter(role => role.name === 'Wizard');
         if(wizRole.size === 0)
@@ -53,7 +57,8 @@ module.exports = {
         // Create the message
         let reactionMessage = await channelReference.send({
             embeds: [{
-                description: body
+                description: body,
+                color: 0x2F4562
             }]
         });
         // React to said message
@@ -66,6 +71,17 @@ module.exports = {
     service(client){
         client.on("messageReactionAdd",async (reaction,user)=>{
             if(user.bot) return;
+            
+            //Cooder Role
+            const rulesMessageID = RULES_MESSAGE_ID;
+            if(reaction.message.id === rulesMessageID){
+                const { guild } = reaction.message;
+                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
+                const member = guild.members.cache.find(m => m.id === user.id);
+                member.roles.add(cooderRole);
+            }
+
+            //Other Roles
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
@@ -81,6 +97,17 @@ module.exports = {
         });
         client.on("messageReactionRemove",async (reaction,user)=>{
             if(user.bot) return;
+
+            //Cooder Role
+            const rulesMessageID = RULES_MESSAGE_ID;
+            if(reaction.message.id === rulesMessageID){
+                const { guild } = reaction.message;
+                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
+                const member = guild.members.cache.find(m => m.id === user.id);
+                member.roles.remove(cooderRole);
+            }
+
+            //Other Roles
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
@@ -134,7 +161,7 @@ function usage(message){
 Now you can type whatever you want here
 Any line that has a role @Mention and an :emoji:
 will become a reaction assignable role.
-if you have multiple roles you ant to be assignable
+if you have multiple roles you want to be assignable
 make sure each @Role and :emoji: are on separate lines.
 you can also have the bot create roles that do not yet exist for you
 by using <@My New Cool Role Name> or course with an :emoji: on the same line

@@ -3,16 +3,10 @@ const Discord = require('discord.js');
 const keepAlive = require('./server');
 const fs = require('fs');
 
-const {
-    RULES_MESSAGE_ID,
-} = require('./data/info');
-
 // Configuration
 require('dotenv').config();
 const token = process.env.TOKEN;
 const prefix = 'coco-';
-
-
 
 // Defining bot
 const client = new Discord.Client({
@@ -74,34 +68,8 @@ client.on('messageCreate', async message => {
     if(command === 'help')
         commandHandler.execute(message, args, commandFiles, Discord);
     else
-        // All other commands use the (message, args, client) interface
-        commandHandler.execute(message, args, client);
-});
-
-// Add reaction handling
-client.on('messageReactionAdd', async (reaction, user) => {
-    const rulesMessageID = RULES_MESSAGE_ID;
-    if(reaction.partial){
-        if(reaction.message.id === rulesMessageID){
-            const { guild } = reaction.message;
-            const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
-            const member = guild.members.cache.find(m => m.id === user.id);
-            member.roles.add(cooderRole);
-        }
-    }
-});
-
-// Remove reaction handling
-client.on('messageReactionRemove', async (reaction, user) => {
-    const rulesMessageID = RULES_MESSAGE_ID;
-    if(reaction.partial){
-        if(reaction.message.id === rulesMessageID){
-            const { guild } = reaction.message;
-            const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
-            const member = guild.members.cache.find(m => m.id === user.id);
-            member.roles.remove(cooderRole);
-        }
-    }
+        // All other commands use the (message, args, client, Discord) interface
+        commandHandler.execute(message, args, client, Discord);
 });
 
 // Host server
