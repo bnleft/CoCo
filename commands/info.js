@@ -26,6 +26,24 @@ module.exports = {
         else
             return message.channel.send('coco-info <rules/officers/socials> ');
 
+    },
+    service(client){
+        client.on("messageReactionAdd",async (reaction,user)=>{
+            if(reaction.message.id === RULES_MESSAGE_ID){
+                const { guild } = reaction.message;
+                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
+                const member = guild.members.cache.find(m => m.id === user.id);
+                member.roles.add(cooderRole);
+            }
+        });
+        client.on("messageReactionRemove",async (reaction,user)=>{
+            if(reaction.message.id === RULES_MESSAGE_ID){
+                const { guild } = reaction.message;
+                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
+                const member = guild.members.cache.find(m => m.id === user.id);
+                member.roles.remove(cooderRole);
+            }
+        });
     }
 }
 

@@ -4,9 +4,7 @@ const reaction_regex_single_line = regex;
 const channel_regex = /^<#(\d+)>/;
 const role_regex = /(^.*)(<@(?:&(\d+)|([^\n:<>@&]+))>)/gm;
 
-const {
-    RULES_MESSAGE_ID,
-} = require('../data/info');
+
 
 module.exports = {
     name: 'reaction-role',
@@ -71,17 +69,6 @@ module.exports = {
     service(client){
         client.on("messageReactionAdd",async (reaction,user)=>{
             if(user.bot) return;
-            
-            //Cooder Role
-            const rulesMessageID = RULES_MESSAGE_ID;
-            if(reaction.message.id === rulesMessageID){
-                const { guild } = reaction.message;
-                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
-                const member = guild.members.cache.find(m => m.id === user.id);
-                member.roles.add(cooderRole);
-            }
-
-            //Other Roles
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
@@ -97,17 +84,6 @@ module.exports = {
         });
         client.on("messageReactionRemove",async (reaction,user)=>{
             if(user.bot) return;
-
-            //Cooder Role
-            const rulesMessageID = RULES_MESSAGE_ID;
-            if(reaction.message.id === rulesMessageID){
-                const { guild } = reaction.message;
-                const cooderRole = guild.roles.cache.find(r => r.name === 'Cooder');
-                const member = guild.members.cache.find(m => m.id === user.id);
-                member.roles.remove(cooderRole);
-            }
-
-            //Other Roles
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
