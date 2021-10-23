@@ -16,16 +16,23 @@ cd CoCo
 ```
 
 Install node dependencies:
+
 ```
 npm install
 ```
 
-Change `.env.sample` to `.env` file
-and edit **TOKEN**
+Change `.env.sample` to `.env` file and edit **TOKEN**
+
+To build the bot run
+
+```
+npm build
+```
 
 Run this command in the terminal to activate the bot
+
 ```
-node .
+npm start
 ```
 
 ## **Server Hosting** (24/7 for free)
@@ -41,9 +48,10 @@ git clone https://github.com/LeftAutomated/CoCo.git
 
 **Make sure to pull all the files and folders out from CoCo folder**
 
-Install node dependencies in the shell:
+Install node dependencies and build in the shell:
 ```
 npm install node@16
+npm build
 ```
 Add **Secrets** (environmental variables)
 <br />
