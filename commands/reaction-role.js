@@ -1,6 +1,8 @@
-const reaction_regex = /^.*<@&(\d+)>.*?((?:<a?)?:[^\n: ]+:(?:\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))/gm;
-const reaction_regex_single_line = /^.*<@&(\d+)>.*?((?:<a?)?:[^\n: ]+:(?:\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))/;
+const regex = /^.*<@(?:&(\d+)|([^\n:<>@&]+))>.*?((?:<a?)?:[^\n: ]+:(?:\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))/;
+const reaction_regex = new RegExp(regex, "gm")
+const reaction_regex_single_line = regex;
 const channel_regex = /^<#(\d+)>/;
+const role_regex = /(^.*)(<@(?:&(\d+)|([^\n:<>@&]+))>)/gm;
 
 module.exports = {
     name: 'reaction-role',
@@ -28,6 +30,26 @@ module.exports = {
         // Parse body for reaction roles
         let reactionDefinitions = parseMessageBody(body);
         if(!reactionDefinitions) return usage(message);
+        // Resolve roles
+        let abort = false;
+        reactionDefinitions =
+            await Promise.all(
+                reactionDefinitions.map(
+                    def => resolveRoleFor(def, message.guild)
+                )
+            )
+            .catch(_ => abort = true);
+        if(abort){
+            message.reply("I need permission to manage roles in order to create new roles.");
+            return;
+        }
+        // Update message
+        body = body.replace(role_regex, function(m,g1,g2,id,name){
+            if(id) return m;
+            let def = reactionDefinitions.find(d => d.name === name);
+            if(def) return g1+`<@&${def.role}>`;
+            return m;
+        });
         // Create the message
         let reactionMessage = await channelReference.send({
             embeds: [{
@@ -43,6 +65,7 @@ module.exports = {
     },
     service(client){
         client.on("messageReactionAdd",async (reaction,user)=>{
+            if(user.bot) return;
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
@@ -54,9 +77,10 @@ module.exports = {
             if(!roleDefinition) return;
             let member = await message.guild.members.fetch(user.id);
             if(!member) return;
-            member.roles.add(roleDefinition.role).catch(_=>undefined);;
+            member.roles.add(roleDefinition.role).catch(_=>undefined);
         });
         client.on("messageReactionRemove",async (reaction,user)=>{
+            if(user.bot) return;
             let channel = await client.channels.fetch(reaction.message.channelId)
             let message = await channel.messages.fetch(reaction.message.id);
             if(message.author.id !== client.user.id || message.content || message.embeds.length !== 1) return;
@@ -81,7 +105,26 @@ function parseMessageBody(body){
     return reactionRoles.map(r => {
         // This match was pre-ensured by the reaction_regex
         let match = r.match(reaction_regex_single_line);
-        return {role:match[1], emoji:match[2]};
+        return {role:match[1], name:match[2], emoji:match[3]};
+    });
+}
+async function resolveRoleFor(definition, guild){
+    // Role id is already resolved
+    if(definition.role) return definition;
+    // Load roles
+    let roles = await guild.roles.fetch().catch(_=>[]);
+    // Attempt to find by name
+    let role = roles.find(r=>r.name===definition.name);
+    // Resolve role if found
+    if(role){
+        definition.role = role.id;
+        return definition;
+    }
+    // Create role if missing
+    return guild.roles.create({name: definition.name}).then(role => {
+        // Resolve role and return
+        definition.role = role.id;
+        return definition;
     });
 }
 
@@ -93,7 +136,9 @@ Any line that has a role @Mention and an :emoji:
 will become a reaction assignable role.
 if you have multiple roles you ant to be assignable
 make sure each @Role and :emoji: are on separate lines.
+you can also have the bot create roles that do not yet exist for you
+by using <@My New Cool Role Name> or course with an :emoji: on the same line
 And here is the exact regex used if you're curious.
-^.*<@&(\\d+)>.*?((?:<a?)?:[^\\n: ]+:(?:\\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))
+^.*<@(?:&(\\d+)|([^\\n:<>@&]+))>.*?((?:<a?)?:[^\\n: ]+:(?:\\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))
 Final thing, at least one reaction role is required.`)
 }
