@@ -35,6 +35,8 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for(const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
+    // To activate listeners needed by some commands.
+    if(command.service) command.service(client);
 }
 
 // Bot start
@@ -44,10 +46,11 @@ client.on('ready', () => {
 });
 
 // Message handling
-client.on('messageCreate', message => {
-    
-    if(message.channel.id === message.guild.channels.cache.find(c => c.name === 'welcome').id){
-        var ran = Math.floor((Math.random() * 10) + 1);
+client.on('messageCreate', async message => {
+    // Welcome channel is undefined when not found
+    let welcomeChannel = message.guild.channels.cache.find(c => c.name === 'welcome');
+    if(welcomeChannel && message.channelId === welcomeChannel.id){
+        let ran = Math.floor((Math.random() * 10) + 1);
         if(ran === 1)
             message.channel.send("I lost my life savings from dogecoin now go read #rules");
         else if(ran === 2)
@@ -61,14 +64,18 @@ client.on('messageCreate', message => {
     
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-    
-    if(command === 'help')
-        client.commands.get('help').execute(message, args, commandFiles, Discord);
-    else if(command === 'info')
-        client.commands.get('info').execute(message, args, client);
-    else if(command === 'stonks')
-        client.commands.get('stonks').execute(message, args, Discord);
 
+    // Get the command by name in the collection
+    let commandHandler = client.commands.get(command);
+    // Abort when the command is undefined
+    if(!commandHandler) return;
+
+    // Help has a special override, consider standardizing the interface
+    if(command === 'help')
+        commandHandler.execute(message, args, commandFiles, Discord);
+    else
+        // All other commands use the (message, args, client) interface
+        commandHandler.execute(message, args, client);
 });
 
 // Add reaction handling
