@@ -23,23 +23,28 @@ npm install
 
 Change `.env.sample` to `.env` file and edit **TOKEN**
 
+To test the bot run
+```
+npm run test
+```
+
 To build the bot run
 
 ```
-npm build
+npm run build
 ```
 
 Run this command in the terminal to activate the bot
 
 ```
-npm start
+npm run start
 ```
 
 ## **Server Hosting** (24/7 for free)
 
 Create a repl at https://replit.com
 <br />
-Template: Node.js
+Template: Typescript
 
 Download this repo in the shell
 ```
@@ -51,7 +56,6 @@ git clone https://github.com/LeftAutomated/CoCo.git
 Install node dependencies and build in the shell:
 ```
 npm install node@16
-npm build
 ```
 Add **Secrets** (environmental variables)
 <br />
