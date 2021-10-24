@@ -1,4 +1,4 @@
-import Discord from "discord.js";
+import * as Discord from "discord.js";
 import {keepAlive} from "./server";
 import {CoCoModule} from "./interfaces";
 import HelpModule from "./modules/help";

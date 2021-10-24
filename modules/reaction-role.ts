@@ -1,5 +1,6 @@
 import {CoCoModule} from "../interfaces";
-import DiscordJS, {
+import * as DiscordJS from "discord.js"; 
+import {
   Collection,
   Guild,
   Message,

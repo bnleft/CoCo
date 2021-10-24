@@ -1,5 +1,5 @@
-import DiscordJS from "discord.js";
-import Discord from "discord.js";
+import * as DiscordJS from "discord.js";
+import * as Discord from "discord.js";
 
 export interface CoCoModule {
   name: string,

@@ -1,6 +1,7 @@
 import {CoCoModule} from "../interfaces";
-import Canvas, {registerFont} from 'canvas';
-import path from 'path';
+import * as Canvas from 'canvas';
+import {registerFont} from 'canvas';
+import * as path from 'path';
 import {MessageAttachment} from "discord.js";
 
 const StonksModule: CoCoModule = {
