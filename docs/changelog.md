@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 1.0.0 | 10/24/2021
+
+- Added `profile` command
+
 ## Version 1.0.0 | 10/23/2021
 
 - Translated the entire project to TypeScript

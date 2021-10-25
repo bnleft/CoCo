@@ -81,3 +81,17 @@ And here is the exact regex used if you're curious.
 ^.*<@(?:&(\d+)|([^\n:<>@&]+))>.*?((?:<a?)?:[^\n: ]+:(?:\d+>)?|(?:\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]))
 Final thing, at least one reaction role is required.
 ```
+
+## The `profile` command
+
+_Access: everyone_
+
+__No arguments__
+> coco-profile
+
+Display the profile of the message's author
+
+__Mention__
+> coco-profile @LeftAutomated
+
+Display the profile of the mentioned user

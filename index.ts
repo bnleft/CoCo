@@ -1,10 +1,11 @@
 import * as Discord from "discord.js";
-import {keepAlive} from "./server";
-import {CoCoModule} from "./interfaces";
+import { keepAlive } from "./server";
+import { CoCoModule } from "./interfaces";
 import HelpModule from "./modules/help";
 import InfoModule from "./modules/info";
 import reactionRoleModule from "./modules/reaction-role";
 import StonksModule from "./modules/stonks";
+import ProfileModule from "./modules/profile";
 
 // Configuration
 require('dotenv').config();
@@ -31,6 +32,7 @@ InitializeModule(HelpModule);
 InitializeModule(InfoModule);
 InitializeModule(reactionRoleModule);
 InitializeModule(StonksModule);
+InitializeModule(ProfileModule);
 
 // Bot start
 client.on('ready', () => {
@@ -40,6 +42,11 @@ client.on('ready', () => {
 
 // Message handling
 client.on('messageCreate', async message => {
+
+  // Skip if message from bot
+  if(message.author.bot)
+    return;
+
   // Welcome channel is undefined when not found
   let welcomeChannel = message.guild?.channels.cache.find(c => c.name === 'welcome');
   if (welcomeChannel && message.channelId === welcomeChannel.id) {
@@ -52,7 +59,7 @@ client.on('messageCreate', async message => {
       message.channel.send("Read #rules if you want rough brain");
   }
 
-  if (!message.content.startsWith(prefix) || message.author.bot)
+  if (!message.content.startsWith(prefix))
     return;
 
   const args = message.content.slice(prefix.length).split(/ +/);
