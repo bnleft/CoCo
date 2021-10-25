@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageMentions } from "discord.js";
+import { MessageEmbed, MessageMentions} from "discord.js";
 import { CoCoModule } from "../interfaces";
 import { stripIndents } from 'common-tags';
 
@@ -7,11 +7,12 @@ const ProfileModule: CoCoModule = {
     permission: 'everyone',
     description: 'Display profile information',
     command(message, args) {
-              
+        if(!message)
+            return;
         const embed = new MessageEmbed();
         let roles: String = "";
         let userID: String = message.author.id;
-
+        
         // Default is author's profile, otherwise mention's profile
         if(args[0]){
             const matches = args[0].match(MessageMentions.USERS_PATTERN);
@@ -20,7 +21,11 @@ const ProfileModule: CoCoModule = {
             userID = matches[0].substring(matches[0].indexOf('!')+1, matches[0].indexOf('>'));
         }
         
+        if(!message.guild) return message.reply('This command is only available in a guild.');
+        
         const theMember = message.guild.members.cache.find(user => user.id === userID);
+
+        if(!theMember) return message.reply('Failed to retrieve member.');
 
         theMember.roles.cache.forEach(rID => {
             if(rID.name !== '@everyone')
@@ -28,12 +33,12 @@ const ProfileModule: CoCoModule = {
         });
 
         embed.setTitle('Profile');
-        embed.setThumbnail(theMember.user.avatarURL({ dynamic:true }));
+        embed.setThumbnail(theMember.avatarURL({ dynamic:true })!);
         embed.setColor([47, 69, 98]);
 
         embed.addField(
-            'Member Information', stripIndents`**__Display Name__**\n ${theMember.displayName} 
-            **__Join Date__**\n ${Intl.DateTimeFormat('en-US').format(theMember.joinedAt)} 
+            'Member Information', stripIndents`**__Display Name__**\n ${ theMember.displayName} 
+            **__Join Date__**\n ${Intl.DateTimeFormat('en-US').format(theMember.joinedAt!)} 
             **__Roles__ **${roles}`, true);
         
         embed.addField(
@@ -42,7 +47,7 @@ const ProfileModule: CoCoModule = {
             **__Tag__**\n ${theMember.user.tag}
             **__Creation Date__**\n ${Intl.DateTimeFormat('en-US').format(theMember.user.createdAt)}`, true);
         
-        embed.setFooter(message.guild.name, message.guild.iconURL());
+        embed.setFooter(message.guild.name, message.guild.iconURL()!);
 
         message.channel.send({
             embeds: [embed]
