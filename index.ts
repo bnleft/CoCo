@@ -6,6 +6,7 @@ import InfoModule from "./modules/info";
 import reactionRoleModule from "./modules/reaction-role";
 import StonksModule from "./modules/stonks";
 import ProfileModule from "./modules/profile";
+import { run } from './instagram/instagram';
 
 // Configuration
 require('dotenv').config();
@@ -86,3 +87,6 @@ function InitializeModule(module: CoCoModule) {
   modules.set(module.name, module);
   if (module.service) module.service(client);
 }
+
+// Instagram Post Webhook
+run();

@@ -1,6 +1,10 @@
 # Change Log
 
-## Version 1.0.0 | 10/24/2021
+## Version 1.0.2 | 10/25/2021
+
+- Added webhook to instagram
+
+## Version 1.0.1 | 10/24/2021
 
 - Added `profile` command
 

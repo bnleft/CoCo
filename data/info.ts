@@ -69,6 +69,8 @@ export const SOCIALS_MESSAGE = `
 https://linktr.ee/codecoogs
 **Instagram**
 https://www.instagram.com/uh_codecoogs/
+**Linkedin**
+https://www.linkedin.com/company/code-coogs/?viewAsMember=true
 **MS Teams**
 https://teams.microsoft.com/l/team/19%3atzOm8jjZzK2-L6QLClLWwaiiep6W_rk4QMONhcHUlEY1%40thread.tacv2/conversations?groupId=614c0053-385f-4bbc-a838-8d5f2864e552&tenantId=170bbabd-a2f0-4c90-ad4b-0e8f0f0c4259
 `;

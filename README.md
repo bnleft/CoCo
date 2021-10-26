@@ -21,7 +21,7 @@ Install node dependencies:
 npm install
 ```
 
-Change `.env.sample` to `.env` file and edit **TOKEN**
+Change `.env.sample` to `.env` file and edit **TOKEN**, **INSTAGRAM_WEBHOOK_ID**, and so on...
 
 To test the bot run
 ```
@@ -60,11 +60,19 @@ npm install node@16
 Add **Secrets** (environmental variables)
 <br />
 
-**Bot Token**
+**Token**
 
 > Key: TOKEN 
 
-> Value: YOURTOKEN
+> Value: YOUR TOKEN
+
+**INSTAGRAM_WEBHOOK_ID**
+
+> Key: INSTAGRAM_WEBHOOK_ID
+
+> Value: YOUR INSTAGRAM_WEBHOOK_ID
+
+and so on...
 
 Use the **Run** button to activate the bot and server
 
