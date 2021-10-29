@@ -55,7 +55,7 @@ git clone https://github.com/LeftAutomated/CoCo.git
 
 Install node dependencies and build in the shell:
 ```
-npm install node@16
+npm install node@16.6
 ```
 Add **Secrets** (environmental variables)
 <br />

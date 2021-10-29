@@ -14,7 +14,7 @@ const instaCookie = process.env.INSTAGRAM_COOKIE;
 const lastPostPath = './instagram/lastPostID.txt';
 
 const getData = async() => {
-
+  try{
     var options: any = {
         muteHttpExcecptions: true,
         "headers": {
@@ -32,7 +32,11 @@ const getData = async() => {
 
     setTimeout(() => {
         testPost(jsonData);
-    }, 20000);
+    }, 200000);
+  }
+  catch(e){
+    console.error(e);
+  }
 }
 
 const testPost = (jsonData: any, ) => {
@@ -51,13 +55,20 @@ const testPost = (jsonData: any, ) => {
             else
                 console.error(err);
         });
-    }, 10000);
+    }, 100000);
 
-    let newPostID = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"];
+    let newPostID: any; 
+    try{
+      newPostID = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"];
+    }catch(e){
+      console.error(e);
+    }
 
-    setTimeout(() => {
-        checkNewPost(jsonData, oldPostID, newPostID)
-    }, 20000);
+      setTimeout(() => {
+          checkNewPost(jsonData, oldPostID, newPostID)
+      }, 200000);
+
+
 };
 
 const checkNewPost = (jsonData: any, oldPostID: any, newPostID: any) => {
@@ -84,11 +95,11 @@ const sendPost = (jsonData: any) => {
 
     const author = instaUsername;
     const authorURL = `https://www.instagram.com/${instaUsername}/`;
-    const authorAvatarURL = jsonData["graphql"]["user"]["profile_pic_url_hd"];
+    const authorAvatarURL: any = jsonData["graphql"]["user"]["profile_pic_url_hd"];
     const title = `@${instaUsername}`;
-    const url = `https://www.instagram.com/p/${jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"]}/`;
-    const caption = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"] || 'No caption.'; 
-    const image = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["display_url"];
+    const url: any = `https://www.instagram.com/p/${jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"]}/`;
+    const caption: any = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"] || 'No caption.'; 
+    const image: any = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["display_url"];
     
     embed.setAuthor(author)
     .setAuthor(author, authorAvatarURL, authorURL)
@@ -113,6 +124,6 @@ export async function run(){
     setInterval(() => {  
         setTimeout(() => {
             getData();
-        }, 10000);
-    }, 20000);
+        }, 100000);
+    }, 200000);
 };
