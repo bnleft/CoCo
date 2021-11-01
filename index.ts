@@ -57,7 +57,7 @@ client.on('messageCreate', async message => {
     else if (ran === 2)
       message.channel.send("I bet you won't read #rules");
     else if (ran === 3)
-      message.channel.send("Read #rules if you want rough brain");
+      message.channel.send("Read <#897566470387671092> if you want rough brain");
   }
 
   if (!message.content.startsWith(prefix))

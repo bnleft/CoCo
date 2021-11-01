@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 1.0.3 | 11/01/2021
+
+- Updated `info` command
+- Fixed Instagram querying errors
+
 ## Version 1.0.2 | 10/25/2021
 
 - Added webhook to instagram
