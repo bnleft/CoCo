@@ -8,45 +8,45 @@ dotenv.config();
 const instaUsername = process.env.INSTAGRAM_USERNAME || 'uh_codecoogs';
 const discordWebHookID: any = process.env.INSTAGRAM_WEBHOOK_ID;
 const discordWebHookToken: any = process.env.INSTAGRAM_WEBHOOK_TOKEN;
-const discordWebHookClient = new Discord.WebhookClient({id: discordWebHookID, token: discordWebHookToken});
+const discordWebHookClient = new Discord.WebhookClient({ id: discordWebHookID, token: discordWebHookToken });
 const instaURL = `https://www.instagram.com/${instaUsername}/channel/?__a=1`;
 const instaCookie = process.env.INSTAGRAM_COOKIE;
 const lastPostPath = './instagram/lastPostID.txt';
 
-const getData = async() => {
-  try{
-    var options: any = {
-        muteHttpExcecptions: true,
-        "headers": {
-            'Cookie': instaCookie
-        }
-    };
+const getData = async () => {
+    try {
+        var options: any = {
+            muteHttpExcecptions: true,
+            "headers": {
+                'Cookie': instaCookie
+            }
+        };
 
-    let jsonData = await fetch(instaURL, options)
-    .then((res) => {
-        return res.text();
-    })
-    .then((text) => {
-        return JSON.parse(text);
-    });
+        let jsonData = await fetch(instaURL, options)
+            .then((res) => {
+                return res.text();
+            })
+            .then((text) => {
+                return JSON.parse(text);
+            });
 
-    setTimeout(() => {
-        testPost(jsonData);
-    }, 200000);
-  }
-  catch(e){
-    console.error(e);
-  }
+        setTimeout(() => {
+            testPost(jsonData);
+        }, 200000);
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
 
-const testPost = (jsonData: any, ) => {
+const testPost = (jsonData: any,) => {
     let oldPostID: any;
 
     setTimeout(() => {
         fs.access(lastPostPath, fs.constants.R_OK, (err) => {
-            if(!err){
+            if (!err) {
                 fs.readFile(lastPostPath, 'utf-8', (err, data) => {
-                    if(!err)
+                    if (!err)
                         oldPostID = data;
                     else
                         console.error(err);
@@ -57,37 +57,32 @@ const testPost = (jsonData: any, ) => {
         });
     }, 100000);
 
-    let newPostID: any; 
-    try{
-      newPostID = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"];
-    }catch(e){
-      console.error(e);
+    try {
+        let newPostID = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"];
+        setTimeout(() => {
+            if (checkNewPost(oldPostID, newPostID))
+                sendPost(jsonData);
+        }, 200000);
+    } catch (e) {
+        console.error(e);
     }
-
-      setTimeout(() => {
-          checkNewPost(jsonData, oldPostID, newPostID)
-      }, 200000);
-
-
 };
 
-const checkNewPost = (jsonData: any, oldPostID: any, newPostID: any) => {
-    if(oldPostID != newPostID){
-        sendPost(jsonData);
-
+const checkNewPost = (oldPostID: string, newPostID: string): boolean => {
+    if (oldPostID != newPostID) {
         fs.access(lastPostPath, fs.constants.R_OK, (err) => {
-            if(!err){
+            if (!err) {
                 fs.writeFile(lastPostPath, newPostID, (err) => {
-                    if(err)
+                    if (err)
                         console.error(err);
                 })
             }
             else
                 console.error(err);
         });
-
+        return true;
     }
-
+    return false;
 }
 
 const sendPost = (jsonData: any) => {
@@ -98,18 +93,18 @@ const sendPost = (jsonData: any) => {
     const authorAvatarURL: any = jsonData["graphql"]["user"]["profile_pic_url_hd"];
     const title = `@${instaUsername}`;
     const url: any = `https://www.instagram.com/p/${jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["shortcode"]}/`;
-    const caption: any = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"] || 'No caption.'; 
+    const caption: any = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["edge_media_to_caption"]["edges"][0]["node"]["text"] || 'No caption.';
     const image: any = jsonData["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][0]["node"]["display_url"];
-    
-    embed.setAuthor(author)
-    .setAuthor(author, authorAvatarURL, authorURL)
-    .setTitle(title)
-    .setURL(url)
-    .setImage(image)
-    .setColor([47, 69, 98])
-    .setTimestamp();
 
-    if(caption)
+    embed.setAuthor(author)
+        .setAuthor(author, authorAvatarURL, authorURL)
+        .setTitle(title)
+        .setURL(url)
+        .setImage(image)
+        .setColor([47, 69, 98])
+        .setTimestamp();
+
+    if (caption)
         embed.setDescription(caption);
 
     discordWebHookClient.send({
@@ -117,11 +112,11 @@ const sendPost = (jsonData: any) => {
         avatarURL: authorAvatarURL,
         embeds: [embed]
     });
-}   
+}
 
 
-export async function run(){
-    setInterval(() => {  
+export async function run() {
+    setInterval(() => {
         setTimeout(() => {
             getData();
         }, 100000);
