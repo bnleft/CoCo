@@ -8,7 +8,9 @@ import {
   ABOUTUS_MESSAGE1,
   ABOUTUS_MESSAGE2,
   ABOUTUS_MESSAGE1_ID,
-  ABOUTUS_MESSAGE2_ID
+  ABOUTUS_MESSAGE2_ID,
+  FESTIVE_POEM,
+  FESTIVE_POEM_ID
 } from "../data/info";
 import {CoCoModule} from "../interfaces";
 import {Client, Message, TextChannel, MessageAttachment} from "discord.js";
@@ -16,6 +18,7 @@ import {Client, Message, TextChannel, MessageAttachment} from "discord.js";
 const cocophone = './modules/assets/images/cocophones.png';
 const cocopose1 = './modules/assets/images/pose1.png';
 const cocofriend = './modules/assets/images/cocofriend.png';
+const cocofestive = './modules/assets/images/festivecoco.png';
 
 const InfoModule: CoCoModule = {
   name: 'info',
@@ -37,6 +40,8 @@ const InfoModule: CoCoModule = {
       sendInfo(message, client, 'about-us1', ABOUTUS_MESSAGE1, ABOUTUS_MESSAGE1_ID);
     else if (args[0] == 'aboutus2')
       sendInfo(message, client, 'about-us2', ABOUTUS_MESSAGE2, ABOUTUS_MESSAGE2_ID);
+    else if (args[0] == 'festivepoem')
+      sendInfo(message, client, 'announcements', FESTIVE_POEM, FESTIVE_POEM_ID);
     else
       return message.channel.send('coco-info <rules/officers/socials> ');
     return message.channel.send('Edit success.');
@@ -85,6 +90,11 @@ const sendInfo = async(message: Message, client: Client, channelName: string, in
       if (channelName == 'socials'){
           m.channel.send({
             files: [cocophone]
+          });
+        }
+      if (channelName == 'announcements'){
+          m.channel.send({
+            files: [cocofestive] 
           });
         }
     });

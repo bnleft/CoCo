@@ -7,6 +7,7 @@ import reactionRoleModule from "./modules/reaction-role";
 import StonksModule from "./modules/stonks";
 import ProfileModule from "./modules/profile";
 import { run } from './instagram/instagram';
+import { runGS } from './googleapi/googlesheets';
 
 // Configuration
 require('dotenv').config();
@@ -37,7 +38,7 @@ InitializeModule(ProfileModule);
 
 // Bot start
 client.on('ready', () => {
-  client.user?.setActivity("with people", {type: "PLAYING"});
+  client.user?.setActivity("with people", { type: "PLAYING" });
   console.log('CoCo is online.');
 });
 
@@ -45,7 +46,7 @@ client.on('ready', () => {
 client.on('messageCreate', async message => {
 
   // Skip if message from bot
-  if(message.author.bot)
+  if (message.author.bot)
     return;
 
   // Welcome channel is undefined when not found
@@ -53,9 +54,9 @@ client.on('messageCreate', async message => {
   if (welcomeChannel && message.channelId === welcomeChannel.id) {
     let ran = Math.floor((Math.random() * 10) + 1);
     if (ran === 1)
-      message.channel.send("I lost my life savings from dogecoin now go read #rules");
+      message.channel.send("I lost my life savings from dogecoin now go read <#897566470387671092>");
     else if (ran === 2)
-      message.channel.send("I bet you won't read #rules");
+      message.channel.send("I bet you won't read <#897566470387671092>");
     else if (ran === 3)
       message.channel.send("Read <#897566470387671092> if you want rough brain");
   }
@@ -90,3 +91,6 @@ function InitializeModule(module: CoCoModule) {
 
 // Instagram Post Webhook
 run();
+
+// Auto assign members with Google Sheets API
+runGS();
