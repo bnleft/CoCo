@@ -3,7 +3,6 @@ export const OFFICERS_MESSAGE_ID = '899830901146521601';
 export const SOCIALS_MESSAGE_ID = '899884077157605457';
 export const ABOUTUS_MESSAGE1_ID = '904794447294894090';
 export const ABOUTUS_MESSAGE2_ID = '904794465460441118';
-export const FESTIVE_POEM_ID = '';
 
 export const RULES_MESSAGE = `\`\`\`prolog\n
 Code Coogs Discord Rules
@@ -127,7 +126,7 @@ they were shy and they were bold
 Coco was excited for the new year
 where new stories would unfold 
 
-Coco looked forward to the future
+Coco looks forward to the future
 with each passing day 
 On behalf of Code Coogs, 
 Coco would like to say, 

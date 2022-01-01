@@ -8,6 +8,7 @@ import StonksModule from "./modules/stonks";
 import ProfileModule from "./modules/profile";
 import { run } from './instagram/instagram';
 import { runGS } from './googleapi/googlesheets';
+import { startJob } from './timed_messages/newyear';
 
 // Configuration
 require('dotenv').config();
@@ -91,6 +92,9 @@ function InitializeModule(module: CoCoModule) {
 
 // Instagram Post Webhook
 run();
+
+// Sends New Year Message
+startJob(client);
 
 // Auto assign members with Google Sheets API
 runGS();
