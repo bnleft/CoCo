@@ -6,8 +6,8 @@ import InfoModule from "./modules/info";
 import reactionRoleModule from "./modules/reaction-role";
 import StonksModule from "./modules/stonks";
 import ProfileModule from "./modules/profile";
+import PointsModule from "./modules/points";
 import { run } from './instagram/instagram';
-import { runGS } from './googleapi/googlesheets';
 import { startJob } from './timed_messages/newyear';
 
 // Configuration
@@ -36,6 +36,7 @@ InitializeModule(InfoModule);
 InitializeModule(reactionRoleModule);
 InitializeModule(StonksModule);
 InitializeModule(ProfileModule);
+InitializeModule(PointsModule);
 
 // Bot start
 client.on('ready', () => {
@@ -95,6 +96,3 @@ run();
 
 // Sends New Year Message
 startJob(client);
-
-// Auto assign members with Google Sheets API
-runGS();

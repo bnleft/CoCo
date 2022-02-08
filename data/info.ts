@@ -40,15 +40,15 @@ Code Coogs Officers
 
 President : Tailer 
 
-VP of External Affairs : Janice 
+VP of External Affairs : Tori 
 
-VP of Internal Affairs : Rodolfo
+VP of Internal Affairs : Jake
 
 Treasurer : Jennifer F
 
 Marketing Director : Lupita
 
-Activities Director : Grace
+Activities Director : Omar
 
 Artist : Jennifer H
 
@@ -58,9 +58,9 @@ Workshop Director : Abdullah
 
 Discord Bot Wizard : Bryant
 
-Webmaster : Cesar
+Webmaster : Abdullah
 
-Workshop Facilitator : Eithan, Frank, Bryant, Nghia, Noah, Abdullah
+Workshop Facilitator : Eithan, Frank, Bryant, Abdullah, Sandy, William, Brandon
 
 =================================================================================================
 

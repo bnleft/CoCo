@@ -1,5 +1,3 @@
-// Google Sheets API | https://developers.google.com/sheets/api/quickstart/nodejs
-// Google Developer | https://console.cloud.google.com/
 const { google } = require('googleapis');
 
 export async function runGS() {
@@ -12,15 +10,43 @@ export async function runGS() {
 
     const googleSheets = google.sheets({ version: "v4", auth: client });
 
-    const spreadsheetId = "1OUhuK8RTGvBdkaTB6G5GT0hvtcB070zMpVPt-ZYgk5Q";
+    const spreadsheetId = "1Aun3NhxSLYnAzBL3EOfnxb3kB_8xEvLyvg1ZrBzacOA";
 
-    // Read rows from spreadsheet
-    const getRows = await googleSheets.spreadsheets.values.get({
+
+    const getNameRows = await googleSheets.spreadsheets.values.get({
         auth,
         spreadsheetId,
-        range: "Sheet1!D:D",
+        range: "Points!A:A",
     });
 
-    console.log(getRows.data.values);
+    const getDiscordTagRows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId,
+        range: "Points!B:B",
+    });
+
+    const getPointRows = await googleSheets.spreadsheets.values.get({
+        auth,
+        spreadsheetId,
+        range: "Points!P:P",
+    });
+
+    const nameData = getNameRows.data.values;
+    const tagData = getDiscordTagRows.data.values;
+    const pointData = getPointRows.data.values;
+
+    let memberData = [];
+
+    for(let i = 1; i < nameData.length; i++){
+        let tempData = {
+            name: nameData[i],
+            tag: tagData[i],
+            point: pointData[i]
+        };
+
+        memberData.push(tempData);
+    }
+
+    return memberData;
 }
 
