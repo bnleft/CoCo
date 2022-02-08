@@ -1,5 +1,15 @@
 # Change Log
 
+## Version 1.0.5 | 2/8/2022
+
+- Google Sheets API
+- Added `points` command
+
+## Version 1.0.4 | 12/31/2021
+
+- Added timed messages
+- New years message
+
 ## Version 1.0.3 | 11/01/2021
 
 - Updated `info` command

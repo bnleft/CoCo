@@ -95,3 +95,22 @@ __Mention__
 > coco-profile @LeftAutomated
 
 Display the profile of the mentioned user
+
+## The `points` command
+
+_Access: everyone_
+
+__No arguments__
+> coco-points
+
+Display how to use this command
+
+__me__
+> coco-points me
+
+Display your member points
+
+__lb__
+> coco-points lb
+
+Display leaderboard
