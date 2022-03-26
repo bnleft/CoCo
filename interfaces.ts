@@ -7,4 +7,13 @@ export interface CoCoModule {
   description: string,
   command?: (message: DiscordJS.Message, args: string[], client: DiscordJS.Client, modules: Discord.Collection<string, CoCoModule>) => Promise<any> | any,
   service?: (client: DiscordJS.Client) => Promise<any> | any
-}
+};
+
+export interface MemberData {
+    name: string,
+    point: string 
+};
+
+export interface MembersData {
+   [key: string]: MemberData
+};

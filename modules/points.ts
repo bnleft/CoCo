@@ -1,4 +1,8 @@
-import { CoCoModule } from "../interfaces";
+import { 
+    CoCoModule,
+    MemberData,
+    MembersData,
+} from "../interfaces";
 import { runGS } from "../googleapi/googlesheets";
 import * as Discord from "discord.js";
 
@@ -8,32 +12,21 @@ const PointsModule: CoCoModule = {
     description: 'Display member points',
     async command(message, args){
         
-        // Object of arrays
-        // One for names
-        // One for discord tags
-        // One for points
-        let memberData = await runGS();
+        // Array of objects
+        let membersData: MembersData = await runGS();
    
         // Displays message's author points
         if(args[0] == "me"){
 
             const tag = message.author.tag;
             
-            let i;
-            for(i = 0; i <= memberData.length; i++){
-                if(i == memberData.length || tag == memberData[i].tag)
-                    break; 
+            if(tag in membersData){
+                const memberData: MemberData = membersData[tag];
+                return message.channel.send(`${memberData.name}, you have ${memberData.point} coco points.`);
             }
 
-            // Can't find user
-            if(i == memberData.length){
-                message.channel.send(`You are not in the database. If you should be, contact wizard.`);
-            }
-            else{
-                message.channel.send(`${memberData[i].name}, you have ${memberData[i].point} coco points.`);
-            }
+            return message.channel.send(`You are not in the database. If you should be, contact wizard.`);
 
-            return;
         }
         // Leaderboard
         else if(args[0] == "lb"){
@@ -46,27 +39,32 @@ const PointsModule: CoCoModule = {
             embed.setTitle(`Top ${top} Leaderboard`);
             embed.setColor('#2F4562');
 
-    
-            memberData.sort((a, b) => {
-                let aN = parseInt(a.point);
-                let bN = parseInt(b.point);
+            let membersDataArr = Object.keys(membersData).map((key) => {
+                return [key, membersData[key]];
+            });
+
+            membersDataArr.sort((a: any, b: any) => {
+                let aN = parseInt(a[1].point);
+                let bN = parseInt(b[1].point);
                 return ((aN > bN) ? -1 : ((aN < bN) ? 1 : 0));
             });
 
+            let topMembersData = membersDataArr.slice(0, top);
+
             for(let i = 0; i < top; i++){
+                const memberData: any = topMembersData[i][1];
                 embed.addFields(
-                    {name: `${i+1} | ${memberData[i].name}`, value: `${memberData[i].point} coco`}
+                    {name: `${i+1} | ${memberData.name}`, value: `${memberData.point} coco`}
                 );
             }
 
-            message.channel.send({
+            return message.channel.send({
                 embeds: [embed]
             });
 
-            return;
         }
 
-        message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard`);
+        message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard \n\n coco-points @mention \n Display mentioned user's points`);
 
     }
 }

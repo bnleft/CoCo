@@ -1,4 +1,11 @@
-const { google } = require('googleapis');
+import { google } from 'googleapis';
+import {
+    MemberData,
+    MembersData
+} from "../interfaces";
+
+type ColumnData = any[][] | any[] | null | undefined;
+    
 
 const auth = new google.auth.GoogleAuth({
         keyFile: "./googleapi/sheetkeys.json",
@@ -11,7 +18,7 @@ export async function runGS() {
     const googleSheets = google.sheets({ version: "v4", auth: client });
 
     const spreadsheetId = "1bPJsKQK2kSC5D9mn_LoAInBqg-wQxk6oZuXYHkRUEsA";
-    
+
     const sheetName = "Members";
     const columns = ['A', 'B', 'F'];
 
@@ -33,22 +40,29 @@ export async function runGS() {
         range: `${sheetName}!${columns[2]}:${columns[2]}`,
     });
 
-    const nameData = getNameRows.data.values;
-    const tagData = getDiscordTagRows.data.values;
-    const pointData = getPointRows.data.values;
+    const nameData: ColumnData = getNameRows.data.values;
+    const tagData: ColumnData = getDiscordTagRows.data.values;
+    const pointData: ColumnData = getPointRows.data.values;
 
-    let memberData = [];
+    let membersData: MembersData = {};
 
-    for(let i = 1; i < nameData.length; i++){
-        let tempData = {
-            name: nameData[i],
-            tag: tagData[i],
-            point: pointData[i]
-        };
+    if (nameData != undefined && 
+        tagData != undefined && 
+        pointData != undefined && 
+        nameData != null && 
+        tagData != null &&
+        pointData != null) {
 
-        memberData.push(tempData);
+
+        for(let i = 1; i < nameData.length; i++){
+            let tempData: MemberData = {
+                name: nameData[i],
+                point: pointData[i]
+            };
+
+            membersData[tagData[i]] = tempData;
+        }
     }
-
-    return memberData;
+    return membersData;
 }
 
