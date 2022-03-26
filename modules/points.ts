@@ -6,15 +6,17 @@ import {
 import { runGS } from "../googleapi/googlesheets";
 import * as Discord from "discord.js";
 
+const USER_PATTERN = /<((@!?\d+)|(:.+?:\d+))>/g;
+
 const PointsModule: CoCoModule = {
     name: 'points',
     permission: 'everyone',
     description: 'Display member points',
-    async command(message, args){
+    async command(message, args, client){
         
         // Array of objects
         let membersData: MembersData = await runGS();
-   
+
         // Displays message's author points
         if(args[0] == "me"){
 
@@ -63,9 +65,23 @@ const PointsModule: CoCoModule = {
             });
 
         }
+        else if (args[0].matchAll(USER_PATTERN)){
+            const mention = args[0];
 
-        message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard \n\n coco-points @mention \n Display mentioned user's points`);
+            const userId = mention.slice(3, -1);
 
+            const user = client.users.cache.get(userId);
+
+            if (!user) {
+                return message.channel.send("Person does not exist.");
+            }
+
+            const mentionMemberData = membersData[user.tag];
+
+            return message.channel.send(`${mentionMemberData.name} has ${mentionMemberData.point} coco points.`);
+        }
+
+        return message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard \n\n coco-points @mention \n Display mentioned user's points`);
     }
 }
 
