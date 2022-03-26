@@ -13,7 +13,10 @@ const PointsModule: CoCoModule = {
     permission: 'everyone',
     description: 'Display member points',
     async command(message, args, client){
-        
+        if(args[0] == undefined) {
+            return message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard \n\n coco-points @mention \n Display mentioned user's points`);
+        }
+
         // Array of objects
         let membersData: MembersData = await runGS();
 
@@ -81,7 +84,6 @@ const PointsModule: CoCoModule = {
             return message.channel.send(`${mentionMemberData.name} has ${mentionMemberData.point} coco points.`);
         }
 
-        return message.channel.send(`coco-points me \n Display your points \n\n coco-points lb \n Display leaderboard \n\n coco-points @mention \n Display mentioned user's points`);
     }
 }
 
