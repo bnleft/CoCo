@@ -20,7 +20,7 @@ export async function runGS() {
     const spreadsheetId = "1bPJsKQK2kSC5D9mn_LoAInBqg-wQxk6oZuXYHkRUEsA";
 
     const sheetName = "Members";
-    const columns = ['A', 'B', 'F'];
+    const columns = ['A', 'B', 'C'];
 
     const getNameRows = await googleSheets.spreadsheets.values.get({
         auth,
