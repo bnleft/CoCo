@@ -71,7 +71,7 @@ const PointsModule: CoCoModule = {
         else if (args[0].matchAll(USER_PATTERN)){
             const mention = args[0];
 
-            const userId = mention.slice(3, -1);
+            const userId = mention.slice(2, -1);
 
             const user = client.users.cache.get(userId);
 
